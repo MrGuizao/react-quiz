@@ -12,7 +12,6 @@ import Footer from "./components/Footer";
 import Timer from "./components/Timer";
 import './index.css';
 
-
 const SECS_PER_QUESTION = 30;
 
 const initialState = {
@@ -80,12 +79,13 @@ function reducer(state, action) {
 }
 
 export default function App() {
-  const [{questions, status, index, answer, points, highscore, secondsRemaining }, dispatch] = useReducer(reducer, initialState);
+  const [{ questions, status, index, answer, points, highscore, secondsRemaining }, dispatch] = useReducer(reducer, initialState);
   const numQuestions = questions.length;
   const maxPossiblePoints = questions.reduce((prev, cur) => prev + cur.points, 0);
 
   useEffect(() => {
-    fetch("http://localhost:8000/questions")
+    // fetch("http://localhost:8000/questions")
+    fetch("https://json-server-sigma-two.vercel.app/questions")
       .then((res) => res.json())
       .then((data) => dispatch({ type: "dataReceived", payload: data }))
       .catch(err => dispatch({ type: "dataFailed" }));
@@ -94,7 +94,6 @@ export default function App() {
   return (
     <div className="app">
       <Header />
-
       <Main>
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
